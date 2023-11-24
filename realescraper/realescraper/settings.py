@@ -12,10 +12,6 @@ BOT_NAME = "realescraper"
 SPIDER_MODULES = ["realescraper.spiders"]
 NEWSPIDER_MODULE = "realescraper.spiders"
 
-FEEDS = {
-    'data.csv': {'format': 'csv', 'overwrite': True}
-}
-
 SCRAPEOPS_API_KEY = 'f158f730-d977-4b42-b030-6a3daf257bc9' # signup at https://scrapeops.io
 SCRAPEOPS_FAKE_USER_AGENT_ENDPOINT = 'https://headers.scrapeops.io/v1/user-agents'
 SCRAPEOPS_FAKE_USER_AGENT_ENABLED = True

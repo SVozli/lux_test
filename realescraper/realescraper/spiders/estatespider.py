@@ -6,7 +6,7 @@ class EstatespiderSpider(scrapy.Spider):
     name = "estatespider"
     allowed_domains = ["www.sreality.cz"]
     # We can just query the  site for all 500 items at once.
-    start_urls = ["https://www.sreality.cz/api/en/v2/estates?category_main_cb=1&category_type_cb=1&per_page=500"]
+    start_urls = ["https://www.sreality.cz/api/en/v2/estates?category_main_cb=1&category_type_cb=1&page=1&per_page=500"]
 
     def parse(self, response):
         # Since we query directly, we get a json response and don't have to extract data from css.

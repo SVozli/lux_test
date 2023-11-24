@@ -18,14 +18,28 @@ class SaveToPostgresPipeline:
         ## Connection Details
         hostname = 'localhost'
         username = 'postgres'
-        password = '********'  # your password
+        password = '12345'  # your password
         database = 'lux_realestates'
 
         ## Create/Connect to database
-        self.connection = psycopg2.connect(host=hostname, user=username, password=password, dbname=database)
+        self.connection = psycopg2.connect(host=hostname, user=username, password=password)
+        self.connection.autocommit = True
 
         ## Create cursor, used to execute commands
         self.cur = self.connection.cursor()
+        self.show_query(self.cur,'current database', 'SELECT current_database()')
+        # Check if  DB exists and clear  it, then create new one
+        self.cur.execute('DROP DATABASE IF EXISTS {} WITH (FORCE)'.format(database))
+        self.cur.execute('CREATE DATABASE {}'.format(database))
+        self.cur.close()
+        self.connection.close()
+
+        ## Create/Connect to database
+        self.connection = psycopg2.connect(host=hostname, user=username, password=password, database=  database)
+        self.connection.autocommit = True
+        ## Create cursor, used to execute commands
+        self.cur = self.connection.cursor()
+        self.show_query(self.cur, 'current database', 'SELECT current_database()')
 
         ## Create books table if none exists
         self.cur.execute("""
@@ -36,6 +50,12 @@ class SaveToPostgresPipeline:
         )
         """)
 
+    def show_query(self,cur,title, qry):
+        print('%s' % (title))
+        cur.execute(qry)
+        for row in cur.fetchall():
+            print(row)
+        print('')
 
     def process_item(self, item, spider):
         print(item["images_url"])
