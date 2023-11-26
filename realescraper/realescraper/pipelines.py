@@ -7,6 +7,7 @@
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
 import psycopg2
+import  logging
 
 class RealescraperPipeline:
     def process_item(self, item, spider):
@@ -16,13 +17,14 @@ class SaveToPostgresPipeline:
 
     def __init__(self):
         ## Connection Details
-        hostname = 'localhost'
+        hostname = 'db'
+        port = 5432
         username = 'postgres'
         password = '12345'  # your password
         database = 'lux_realestates'
 
         ## Create/Connect to database
-        self.connection = psycopg2.connect(host=hostname, user=username, password=password)
+        self.connection = psycopg2.connect(host=hostname, user=username, password=password, port=port)
         self.connection.autocommit = True
 
         ## Create cursor, used to execute commands
@@ -35,7 +37,7 @@ class SaveToPostgresPipeline:
         self.connection.close()
 
         ## Create/Connect to database
-        self.connection = psycopg2.connect(host=hostname, user=username, password=password, database=  database)
+        self.connection = psycopg2.connect(host=hostname, user=username, password=password, database=  database, port=port)
         self.connection.autocommit = True
         ## Create cursor, used to execute commands
         self.cur = self.connection.cursor()
@@ -50,15 +52,16 @@ class SaveToPostgresPipeline:
         )
         """)
 
+        self.show_query(self.cur, 'current database', 'SELECT * from estates')
+
     def show_query(self,cur,title, qry):
-        print('%s' % (title))
+        logging.warning('%s' % (title))
         cur.execute(qry)
         for row in cur.fetchall():
-            print(row)
-        print('')
+            logging.warning((row))
+        logging.warning((''))
 
     def process_item(self, item, spider):
-        print(item["images_url"])
         ## Define insert statement
         self.cur.execute(""" insert into estates (
             title, 
@@ -73,7 +76,6 @@ class SaveToPostgresPipeline:
             item["location"],
             item["images_url"]
         ))
-
         ## Execute insert of data into database
         self.connection.commit()
         return item

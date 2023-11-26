@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import time
 from server.db_read import LoadFromPostgres
 
-hostName = "127.0.0.1"
+hostName = "0.0.0.0"
 serverPort = 8080
 
 class MyServer(BaseHTTPRequestHandler):
@@ -10,7 +10,6 @@ class MyServer(BaseHTTPRequestHandler):
         print("before estates")
         loader = LoadFromPostgres()
         estates = loader.retrieve_items()
-        print("did we read estates?")
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         self.end_headers()
@@ -25,7 +24,7 @@ class MyServer(BaseHTTPRequestHandler):
 
 def  run_server():
     webServer = HTTPServer((hostName, serverPort), MyServer)
-    print("Server started http://%s:%s" % (hostName, serverPort))
+    print("Server started http://%s:%s" % ("127.0.0.1", serverPort))
 
     try:
         webServer.serve_forever()

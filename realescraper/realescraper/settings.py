@@ -9,8 +9,8 @@
 
 BOT_NAME = "realescraper"
 
-SPIDER_MODULES = ["realescraper.spiders"]
-NEWSPIDER_MODULE = "realescraper.spiders"
+SPIDER_MODULES = ["realescraper.realescraper.spiders"]
+NEWSPIDER_MODULE = "realescraper.realscraper.spiders"
 
 SCRAPEOPS_API_KEY = 'f158f730-d977-4b42-b030-6a3daf257bc9' # signup at https://scrapeops.io
 SCRAPEOPS_FAKE_USER_AGENT_ENDPOINT = 'https://headers.scrapeops.io/v1/user-agents'
@@ -56,7 +56,7 @@ ROBOTSTXT_OBEY = False
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
    #"realescraper.middlewares.RealescraperDownloaderMiddleware": 543,
-   "realescraper.middlewares.ScrapeOpsFakeBrowserHeaderAgentMiddleware": 400,
+   "realescraper.realescraper.middlewares.ScrapeOpsFakeBrowserHeaderAgentMiddleware": 400,
 }
 
 # Enable or disable extensions
@@ -68,7 +68,7 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   "realescraper.pipelines.SaveToPostgresPipeline": 300,
+   "realescraper.realescraper.pipelines.SaveToPostgresPipeline": 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
